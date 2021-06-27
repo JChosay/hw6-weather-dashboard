@@ -1,0 +1,118 @@
+*,*::before,*::after{
+    box-sizing: border-box;
+}
+
+:root{
+    --dark: #001219;
+    --lightdark1: #005f73;
+    --lightdark2: #0a9396;
+    --heading: #ae2012;
+    --heading2: #bb3e03;
+    --heading3: #ca6702;
+    --accentyellow: #ee9b00;
+    --accenttan: #e9d8a6;
+}
+
+#main{
+    position: relative;
+    height: 100vh;
+    flex-direction: row;
+}
+
+#header{
+    color: var(--heading);
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    background-color: var(--lightdark1);
+    height: 10vh;
+}
+
+#header h1{
+    position: relative;
+    background-color: var(--lightdark1);
+    padding-top: .75rem;
+    font-family: "Impact";
+    margin: auto;
+    font-size: 5.5vh;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+#searcharea{
+    width: 22vh;
+    /* border-bottom: solid; */
+    padding-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+#searcharea h2{
+    font-family:"Times New Roman";
+    display: flex;
+    flex-direction: column;
+}
+
+#citysearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#searchDiv{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+}
+
+#inputfield{
+    width: 100px;
+    font-family:"Times New Roman";
+}
+#searchbtn{
+    cursor: pointer;
+	position: relative;
+	padding: .25rem .75rem;
+	border-radius: 3.75rem;
+	line-height: 1rem;
+	font-size: 1rem;
+	font-weight: 600;
+	margin-left: auto;
+	border: 1px solid #012880;
+	background-image: linear-gradient(-180deg, var(--heading) 0%, var(--heading2) 100%);
+}
+
+#searchhistory{
+    display: flex;
+    flex-direction: column;
+}
+
+.historybuttons{
+    width: 22vh;
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+#citydayinfo h4{
+    /* line-height: -10em; */
+    margin-top: 0%;
+}
+
+#citydayinfo h3{
+    margin-top: 1%;
+}
+
+#citydayinfo{
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    left: 25vh;
+    line-height: 5px;
+    top: 7rem;
+    border-style: solid;
+    width: 88vh;
+    padding-left: 1vh;
+}
+
+/* #cityfivedayinfo{
+
+} */
