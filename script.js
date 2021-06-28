@@ -7,7 +7,6 @@ var tempCall;
 var windCall;
 var humidityCall;
 var uvindexCall;
-var beginswitch = 0;
 var main = document.getElementById('main');
 var header = document.getElementById('header');
 var searcharea = document.getElementById('searcharea');
@@ -21,8 +20,7 @@ var cityfivedayinfo = document.getElementById('cityfivedayinfo');
 var forecastcards = document.getElementById('forecastcards');
 var count = 8;
 var dayIndex = [0, count, 2*count, 3*count, 4*count];
-
-
+var forecastcontainer = document.getElementById('forecastcontainer');
 
 function loadScreen (){
     var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
@@ -34,8 +32,6 @@ function loadScreen (){
 
     for(var i=0; i<searchTrack.length+1; i++){
         if (searchTrack[i] == null){
-            return;
-        }else if (searchTrack[i] == 'undefined'){
             return;
         }else{
             var historyItem = document.createElement('input');
@@ -87,6 +83,8 @@ function submitCity(event){
                 windCallConv = data.current.wind_speed;
                 humidityCall = data.current.humidity;
                 uvindexCall = data.current.uvi;
+                tempIcon = data.current.weather[0].icon;
+                console.log("tempIcon: "+tempIcon)
                 var tempConvCall;
                 
                 tempCall = tempCallConv.toFixed(0);
@@ -112,7 +110,11 @@ function submitCity(event){
                 citydayinfo.appendChild(results4Tag);
                 citydayinfo.setAttribute('display','flex');
                 citydayinfo.style.display = "flex";
-                beginswitch++;
+
+                var iconTag = document.createElement('img');
+                iconTag.setAttribute('src',`https://openweathermap.org/img/wn/${tempIcon}@2x.png`);
+
+                citydayinfo.appendChild(iconTag);
 
                 var searchTrack = localStorage.getItem('searchTrack');
 
@@ -146,9 +148,10 @@ function submitCity(event){
             })
     })
     cityfivedayinfo.style.display = "flex";
+    
 }
 
-function displaySearches(){
+function displaySearches(){  
     var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
     var searchTrackIndex = searchTrack.length;
 
@@ -167,9 +170,9 @@ function displaySearches(){
     }
 
     for(var i=0; i<searchTrack.length+1; i++){
-        if (searchTrack[i] == null){
-            return;
-        }else{
+        // if (searchTrack[i] == null){
+        //     return;
+        // }else{
             var citysearchName = searchTrack[i].cityname;
             var citysearchTemp = searchTrack[i].temp;
             var citysearchWind = searchTrack[i].wind;
@@ -177,24 +180,88 @@ function displaySearches(){
             var citysearchUV = searchTrack[i].uvi;
             var countButtons = document.getElementsByClassName("historybuttons");
             displayFiveDay();  
-        }   
+        // }   
     }
 }
 
 function displayFiveDay(){
+    console.log("Begin displayFiveDay");
     cityfivedayinfo.style.display = "flex";
+    
     
     let fiveDayRequestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=c422aee9ed9f77364f533d6d1dbe4ba9&units=imperial`
 
     fetch(fiveDayRequestUrl)
         .then(function(response) {
+            forecastcontainer.innerHTML = "";
             return response.json();
         })
         .then(function(data){
             console.log(data);
-            for(let i = 0; i < dayIndex.length; i++) {
+            for(let i = 0; i < dayIndex.length+1; i++) {
                 var tempWeather = data.list[dayIndex[i]];
-                console.log(tempWeather);
-            }  
+                
+                var tempDate = tempWeather.dt;
+                var unixTimeStamp = tempDate*1000;
+                var dateObject = new Date(unixTimeStamp);
+                var humanDateFormat = dateObject.toLocaleString();
+                
+                var dateWeekday = dateObject.toLocaleString("en-US",{weekday:"long"});
+
+                var dateMonth = dateObject.toLocaleString("en-US",{month:"long"});
+
+                var dateDay = dateObject.toLocaleString("en-US",{day:"numeric"});
+
+                var dateYear = dateObject.toLocaleString("en-US",{year:"numeric"});
+
+                var dateDisplay = dateMonth+" "+dateDay+", "+dateYear
+
+                var tempIcon = tempWeather.weather[0].icon;
+                var tempPlace = tempWeather.main.temp;
+                var tempFeelz = tempWeather.main.feels_like;
+                var tempWind = tempWeather.wind.speed+" MPH"
+                var tempHumidity = tempWeather.main.humidity
+                
+                var forecastcard = document.createElement('div');
+                forecastcard.setAttribute('class','forecastcard');
+                var dateWeekdayTag = document.createElement('h3');
+                var dateWeekdayText = document.createTextNode(dateWeekday);
+                
+                var iconTag = document.createElement('img');
+                iconTag.setAttribute('src',`https://openweathermap.org/img/wn/${tempIcon}@2x.png`);
+                
+                // var iconCall = document.(tempIcon);
+                
+                var dateDateTag = document.createElement('h4');
+                var dateDateText = document.createTextNode(dateDisplay);
+                var tempTag = document.createElement('p');
+                var tempText = document.createTextNode("Temp: "+tempPlace+"°F");
+                var feelzTag = document.createElement('p');
+                var feelzText = document.createTextNode("Feels like: "+tempFeelz+"°F");
+                var windTag = document.createElement('p');
+                var windText = document.createTextNode("Wind: "+tempWind);
+                var humidTag = document.createElement('p');
+                var humidText = document.createTextNode("Humidity: "+tempHumidity+"%");
+
+                dateWeekdayTag.appendChild(dateWeekdayText);
+                // iconTag.appendChild(iconCall);
+
+                dateDateTag.appendChild(dateDateText);
+                tempTag.appendChild(tempText);  
+                feelzTag.appendChild(feelzText);
+                windTag.appendChild(windText);
+                humidTag.appendChild(humidText);
+
+                forecastcard.appendChild(dateWeekdayTag);
+                forecastcard.appendChild(iconTag);
+                forecastcard.appendChild(dateDateTag);
+                forecastcard.appendChild(tempTag);
+                forecastcard.appendChild(feelzTag);
+                forecastcard.appendChild(windTag);
+                forecastcard.appendChild(humidTag);
+
+                forecastcontainer.appendChild(forecastcard);
+            }
+
         })
 }

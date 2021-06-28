@@ -99,6 +99,13 @@
     font-family: 'Poppins', sans-serif;
 }
 
+#citydayinfo img{
+    width: 30%;
+    height: auto;
+    position: absolute;
+    left: 25vh;
+}
+
 #citydayinfo h4{
     /* line-height: -10em; */
     margin-top: 0%;
@@ -128,7 +135,7 @@
     position: absolute;
     left: 25vh;
     top: 20rem;
-    height: 15rem;
+    height: 16.5rem;
     width: 88vh;
     display: none;
     padding-left: 1vh;
@@ -144,22 +151,36 @@
 #forecastcontainer{
     position: absolute;
     display: grid;
-    grid-template-columns: 40% 40% 40% 40% 40%;
+    grid-template-columns: 25% 25% 25% 25% 25%;
     flex-direction: row;
-    
-
-    
 }
 
 .forecastcard{
-    display: flex;
     grid-template-columns: 40% 40% 40% 40% 40%;
     flex-direction: column;
     line-height: 5px;
-    
+    margin-top: 5vh;
+    width: auto;
 }
 
 .forecastcard p{
     margin-top: 1vh
     
 }
+
+.forecastcard h4{
+    margin-top: .25vh;
+    margin-bottom: 2vh;
+    color: var(--lightdark1);
+
+}
+
+.forecastcard h3{
+    color: var(--heading);
+    margin-bottom: .25vh;
+}
+
+
+.forecastcard img{
+    width: 50%;
+    height: auto;
