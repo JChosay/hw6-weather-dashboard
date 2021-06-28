@@ -8,7 +8,6 @@ var windCall;
 var humidityCall;
 var uvindexCall;
 var beginswitch = 0;
-
 var main = document.getElementById('main');
 var header = document.getElementById('header');
 var searcharea = document.getElementById('searcharea');
@@ -19,27 +18,32 @@ searchbtn.addEventListener("click",submitCity);
 var searchhistory = document.getElementById('searchhistory');
 var citydayinfo = document.getElementById('citydayinfo');
 var cityfivedayinfo = document.getElementById('cityfivedayinfo');
+var forecastcards = document.getElementById('forecastcards');
+var count = 8;
+var dayIndex = [0, count, 2*count, 3*count, 4*count];
+
+
 
 function loadScreen (){
     var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
     if (searchTrack == null){
-        console.log("Nothing in the search history.");
         return;
     }else if (searchTrack.length > 0){
         searcharea.style.borderBottom = "solid";
     }
 
     for(var i=0; i<searchTrack.length+1; i++){
-        if (searchTrack == null){
+        if (searchTrack[i] == null){
+            return;
+        }else if (searchTrack[i] == 'undefined'){
             return;
         }else{
-            console.log(searchTrack);
             var historyItem = document.createElement('input');
             historyItem.setAttribute('type','button');
             historyItem.setAttribute('value',searchTrack[i].cityname);
             historyItem.setAttribute('class','historybuttons');
             searchhistory.appendChild(historyItem);
-            }
+        }
     }
 }
 
@@ -58,11 +62,9 @@ function submitCity(event){
         return response.json();
     })
     .then(function(data) {
-        console.log(locationURL);
         latitude = data[0].lat;
         longitude = data[0].lon;
-        console.log(latitude+", "+longitude);
-        
+    
         var h1Tag = document.createElement('h1');
         var h1Text = document.createTextNode(userinput);
         h1Tag.appendChild(h1Text);
@@ -74,8 +76,6 @@ function submitCity(event){
         citydayinfo.appendChild(dateTag);
 
         let queryUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=c422aee9ed9f77364f533d6d1dbe4ba9&units=imperial`
-        
-        console.log(queryUrl);
 
         fetch(queryUrl)
             .then(function(response){
@@ -142,24 +142,22 @@ function submitCity(event){
                     searchTrack = searchMem.concat(newSearch);
                     localStorage.setItem('searchTrack', JSON.stringify(searchTrack));
                     displaySearches();
-                    displayFiveDay();
                 }
             })
     })
+    cityfivedayinfo.style.display = "flex";
 }
 
 function displaySearches(){
     var searchTrack = JSON.parse(window.localStorage.getItem('searchTrack'));
     var searchTrackIndex = searchTrack.length;
-    console.log("searchTrackIndex: "+searchTrackIndex);
 
     searchhistory.innerHTML = "";
     for(var i=0; i<searchTrack.length+1; i++){
         
-        if (searchTrack == null){
-            return;
+        if (searchTrack[i] == null){
+            break;
         }else{
-            console.log(searchTrack);
             var historyItem = document.createElement('input');
             historyItem.setAttribute('type','button');
             historyItem.setAttribute('value',searchTrack[i].cityname);
@@ -169,17 +167,34 @@ function displaySearches(){
     }
 
     for(var i=0; i<searchTrack.length+1; i++){
-        var citysearchName = searchTrack[i].cityname;
-        var citysearchTemp = searchTrack[i].temp;
-        var citysearchWind = searchTrack[i].wind;
-        var citysearchHumid = searchTrack[i].humidity;
-        var citysearchUV = searchTrack[i].uvi;
-
-        var countButtons = document.getElementsByClassName("historybuttons");
-        console.log("countButtons is: "+countButtons.length);
+        if (searchTrack[i] == null){
+            return;
+        }else{
+            var citysearchName = searchTrack[i].cityname;
+            var citysearchTemp = searchTrack[i].temp;
+            var citysearchWind = searchTrack[i].wind;
+            var citysearchHumid = searchTrack[i].humidity;
+            var citysearchUV = searchTrack[i].uvi;
+            var countButtons = document.getElementsByClassName("historybuttons");
+            displayFiveDay();  
+        }   
     }
 }
 
 function displayFiveDay(){
-    console.log("displayFiveDay is working fine.");
+    cityfivedayinfo.style.display = "flex";
+    
+    let fiveDayRequestUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=c422aee9ed9f77364f533d6d1dbe4ba9&units=imperial`
+
+    fetch(fiveDayRequestUrl)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data){
+            console.log(data);
+            for(let i = 0; i < dayIndex.length; i++) {
+                var tempWeather = data.list[dayIndex[i]];
+                console.log(tempWeather);
+            }  
+        })
 }

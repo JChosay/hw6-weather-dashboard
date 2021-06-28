@@ -31,23 +31,23 @@
 #header h1{
     position: relative;
     background-color: var(--lightdark1);
-    padding-top: .75rem;
-    font-family: "Impact";
+    padding-top: .1rem;
+    font-family: 'Lobster', cursive;
     margin: auto;
-    font-size: 5.5vh;
+    letter-spacing: 0.1em;
+    font-size: 7vh;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 #searcharea{
-    width: 22vh;
-    /* border-bottom: solid; */
+    width: 23vh;
     padding-bottom: 5px;
     display: flex;
     flex-direction: column;
 }
 
 #searcharea h2{
-    font-family:"Times New Roman";
+    font-family: 'Poppins', sans-serif;
     display: flex;
     flex-direction: column;
 }
@@ -74,11 +74,12 @@
 	padding: .25rem .75rem;
 	border-radius: 3.75rem;
 	line-height: 1rem;
-	font-size: 1rem;
+	font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
 	font-weight: 600;
 	margin-left: auto;
-	border: 1px solid #012880;
-	background-image: linear-gradient(-180deg, var(--heading) 0%, var(--heading2) 100%);
+	border: 1px solid var(--dark);
+	background-image: linear-gradient(-180deg, var(--heading2) 0%, var(--heading2) 100%);
 }
 
 #searchhistory{
@@ -87,9 +88,15 @@
 }
 
 .historybuttons{
-    width: 22vh;
+    width: 23vh;
     padding-top: 5px;
+    padding-bottom: 5px;
     margin-top: 5px;
+    border: 1px solid #012880;
+	background-image: linear-gradient(-180deg, var(--heading3) 0%, var(--heading2) 100%);
+    color: whitesmoke;
+    border-radius: 3.75rem;
+    font-family: 'Poppins', sans-serif;
 }
 
 #citydayinfo h4{
@@ -109,10 +116,50 @@
     line-height: 5px;
     top: 7rem;
     border-style: solid;
+    border-color: var(--heading);
     width: 88vh;
     padding-left: 1vh;
+    font-family: 'Bitter', serif;
 }
 
-/* #cityfivedayinfo{
+#cityfivedayinfo{
+    border: dashed;
+    border-color: var(--heading3);
+    position: absolute;
+    left: 25vh;
+    top: 20rem;
+    height: 15rem;
+    width: 88vh;
+    display: none;
+    padding-left: 1vh;
+    font-family: 'Bitter', serif;
+}
 
-} */
+#cityfivedayinfo h2{
+    position: relative;
+    margin-top: 1vh;
+    margin-top: 1vh;
+}
+
+#forecastcontainer{
+    position: absolute;
+    display: grid;
+    grid-template-columns: 40% 40% 40% 40% 40%;
+    flex-direction: row;
+    
+
+    
+}
+
+.forecastcard{
+    display: flex;
+    grid-template-columns: 40% 40% 40% 40% 40%;
+    flex-direction: column;
+    line-height: 5px;
+    
+}
+
+.forecastcard p{
+    margin-top: 1vh
+    
+}
